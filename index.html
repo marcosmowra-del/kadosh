@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KADOSH Media - Creative Media & Photo Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* RESET DE CORES - 100% PRETO, CINZA E BRANCO (ZERO VERDE) */
+    :root {
+      --bg-dark: #000000 !important;
+      --bg-surface: #121212 !important;
+      --bg-card: #1c1c1c !important;
+      --bg-card-hover: #282828 !important;
+      
+      --accent-primary: #ffffff !important;
+      --accent-muted: #8e8e93 !important;
+      --accent-dark: #3a3a3c !important;
+      
+      --border-color: #2c2c2e !important;
+      --border-highlight: #48484a !important;
+
+      --text-main: #ffffff !important;
+      --text-muted: #aeaeb2 !important;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+
+      --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.9);
+      --transition: all 0.25s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 1.5rem;
+    }
+
+    /* TELA DE LOGIN MONOCROMÁTICA */
+    #login-screen {
+      position: fixed;
+      inset: 0;
+      background: #000000 !important;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .login-card {
+      background: #121212 !important;
+      border: 1px solid #48484a !important;
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .aperture-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+    }
+
+    .login-card h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #ffffff !important;
+    }
+
+    .login-card p {
+      color: #aeaeb2 !important;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      gap: 0.4rem;
+      width: 100%;
+    }
+
+    .input-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ffffff !important;
+    }
+
+    .input-group input {
+      width: 100%;
+      background: #000000 !important;
+      border: 1.5px solid #2c2c2e !important;
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1rem;
+      color: #ffffff !important;
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+      display: block;
+    }
+
+    .input-group input:focus {
+      border-color: #ffffff !important;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+    }
+
+    #login-error {
+      color: #ff453a;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    /* MAIN APP CONTAINER */
+    .kadosh-app {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .kadosh-app.active {
+      display: block;
+    }
+
+    /* HEADER */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid #2c2c2e !important;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .brand-texts h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #ffffff !important;
+      line-height: 1;
+    }
+
+    .brand-texts p {
+      color: #aeaeb2 !important;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* BOTÕES MONOCROMÁTICOS */
+    .btn-primary {
+      background: #ffffff !important;
+      color: #000000 !important;
+      font-weight: 700;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background: #e5e5ea !important;
+    }
+
+    .btn-secondary {
+      background: #121212 !important;
+      color: #ffffff !important;
+      border: 1px solid #2c2c2e !important;
+      padding: 0.7rem 1.2rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      border-color: #ffffff !important;
+      color: #ffffff !important;
+      background: #1c1c1c !important;
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* CONTROLES E FILTROS */
+    .controls-panel {
+      background: #121212 !important;
+      border: 1px solid #2c2c2e !important;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    #album-search {
+      width: 100%;
+      background: #000000 !important;
+      border: 1px solid #2c2c2e !important;
+      border-radius: var(--radius-md);
+      padding: 1rem 1.2rem;
+      color: #ffffff !important;
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 1.2rem;
+      transition: var(--transition);
+    }
+
+    #album-search:focus {
+      border-color: #ffffff !important;
+    }
+
+    .filters-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .category-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .tag {
+      background: #000000 !important;
+      border: 1px solid #2c2c2e !important;
+      color: #aeaeb2 !important;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .tag:hover {
+      border-color: #ffffff !important;
+      color: #ffffff !important;
+    }
+
+    .tag.active {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border-color: #ffffff !important;
+      font-weight: 700;
+    }
+
+    #year-filter {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border: 1px solid #2c2c2e !important;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-md);
+      outline: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    /* GRADE DE ÁLBUNS */
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .album-card {
+      background: #1c1c1c !important;
+      border: 1px solid #2c2c2e !important;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .album-card:hover {
+      transform: translateY(-5px);
+      border-color: #ffffff !important;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.9);
+      background: #282828 !important;
+    }
+
+    .album-cover {
+      height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.2rem;
+      background: #111111 !important;
+      border-bottom: 1px solid #2c2c2e !important;
+    }
+
+    .cover-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .cover-icon {
+      align-self: center;
+      font-size: 3rem;
+    }
+
+    .badge-category {
+      background: #000000 !important;
+      border: 1px solid #2c2c2e !important;
+      color: #ffffff !important;
+      padding: 0.3rem 0.8rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .btn-fav {
+      background: #000000 !important;
+      border: 1px solid #2c2c2e !important;
+      color: #aeaeb2 !important;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1rem;
+    }
+
+    .btn-fav:hover, .btn-fav.active {
+      color: #ffd60a !important;
+      border-color: #ffd60a !important;
+    }
+
+    .album-info {
+      padding: 1.2rem;
+    }
+
+    .album-info h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff !important;
+      margin-bottom: 0.4rem;
+    }
+
+    .album-meta {
+      font-size: 0.85rem;
+      color: #aeaeb2 !important;
+    }
+
+    /* MODAIS */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92) !important;
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #121212 !important;
+      border: 1px solid #48484a !important;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 950px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.95);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #2c2c2e !important;
+    }
+
+    .modal-header h2 {
+      font-size: 1.5rem;
+      color: #ffffff !important;
+    }
+
+    .modal-header p {
+      color: #aeaeb2 !important;
+      font-size: 0.9rem;
+    }
+
+    .btn-close {
+      background: transparent;
+      border: none;
+      color: #aeaeb2 !important;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .btn-close:hover {
+      color: #ffffff !important;
+    }
+
+    /* GALERIA FOTOS */
+    .gallery-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      background: #000000 !important;
+      padding: 0.8rem 1.2rem;
+      border-radius: var(--radius-md);
+      border: 1px solid #2c2c2e !important;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .photo-card-demo {
+      background: #1c1c1c !important;
+      border: 1px solid #2c2c2e !important;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .photo-card-demo.selected {
+      border-color: #ffffff !important;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    }
+
+    .photo-preview-placeholder {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000000 !important;
+      border-bottom: 1px solid #2c2c2e !important;
+      position: relative;
+    }
+
+    .photo-preview-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-checkbox {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 20px;
+      height: 20px;
+      accent-color: #ffffff;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .photo-card-body {
+      padding: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .photo-card-body span {
+      font-size: 0.8rem;
+      color: #aeaeb2 !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 110px;
+    }
+
+    /* EDITOR DE FOTOS */
+    .editor-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 1.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .editor-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .editor-preview-container {
+      background: #000000 !important;
+      border: 1px solid #2c2c2e !important;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      padding: 1rem;
+    }
+
+    .editor-preview-box {
+      width: 100%;
+      height: 280px;
+      border-radius: var(--radius-md);
+      background: #111111 !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff !important;
+      border: 1px solid #2c2c2e !important;
+      text-align: center;
+      padding: 1rem;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: filter 0.15s ease;
+    }
+
+    .editor-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .control-group label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      color: #aeaeb2 !important;
+    }
+
+    .control-group label span {
+      color: #ffffff !important;
+      font-weight: 700;
+    }
+
+    input[type="range"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: #000000 !important;
+      border-radius: var(--radius-full);
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ffffff !important;
+      cursor: pointer;
+    }
+
+    .editor-toolbar {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TELA DE LOGIN MONOCROMÁTICA -->
+  <div id="login-screen">
+    <div class="login-card">
+      <svg class="aperture-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="46" stroke="#ffffff" stroke-width="3.5" fill="#141414"/>
+        <path d="M50 4 L50 28 L30 18 Z" fill="#3a3a3c" />
+        <path d="M96 50 L72 50 L82 30 Z" fill="#48484a" />
+        <path d="M50 96 L50 72 L70 82 Z" fill="#3a3a3c" />
+        <path d="M4 50 L28 50 L18 70 Z" fill="#48484a" />
+        <path d="M82 82 L65 65 L82 55 Z" fill="#636366" />
+        <path d="M18 18 L35 35 L18 45 Z" fill="#636366" />
+        <path d="M50 26 V74 M32 42 H68" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+
+      <h2>KADOSH</h2>
+      <p>Creative Media · Photo Management</p>
+      
+      <!-- CAMPO E-MAIL -->
+      <div class="input-group">
+        <label for="login-email">E-mail da Equipe</label>
+        <input type="email" id="login-email" value="midia@kadosh.com" placeholder="seu.email@igreja.com" autocomplete="username" />
+      </div>
+
+      <!-- CAMPO SENHA -->
+      <div class="input-group">
+        <label for="login-password">Senha</label>
+        <input type="password" id="login-password" value="kadosh2026" placeholder="Digite a sua senha" autocomplete="current-password" />
+      </div>
+
+      <div id="login-error">Preencha o e-mail e a senha para entrar.</div>
+
+      <button id="btn-login" class="btn-primary" style="margin-top: 0.5rem;">Entrar no Painel</button>
+    </div>
+  </div>
+
+  <!-- PLATAFORMA KADOSH MEDIA -->
+  <div class="kadosh-app" id="app-container">
+    <header class="app-header">
+      <div class="brand-container">
+        <svg class="aperture-logo" style="width: 55px; height: 55px; margin: 0;" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="46" stroke="#ffffff" stroke-width="3.5" fill="#141414"/>
+          <path d="M50 4 L50 28 L30 18 Z" fill="#3a3a3c" />
+          <path d="M96 50 L72 50 L82 30 Z" fill="#48484a" />
+          <path d="M50 96 L50 72 L70 82 Z" fill="#3a3a3c" />
+          <path d="M4 50 L28 50 L18 70 Z" fill="#48484a" />
+          <path d="M82 82 L65 65 L82 55 Z" fill="#636366" />
+          <path d="M18 18 L35 35 L18 45 Z" fill="#636366" />
+          <path d="M50 26 V74 M32 42 H68" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+
+        <div class="brand-texts">
+          <h1>KADOSH</h1>
+          <p>Creative Media · Photo Management</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="new-album" class="btn-primary">+ Novo Álbum</button>
+        <button id="btn-logout" class="btn-secondary">Sair</button>
+      </div>
+    </header>
+
+    <!-- CONTROLES -->
+    <section class="controls-panel">
+      <input type="search" id="album-search" placeholder="Pesquisar por culto, evento ou ministério..." />
+
+      <div class="filters-row">
+        <div class="category-tags" id="category-filters">
+          <button class="tag active" data-category="todos">Todos</button>
+          <button class="tag" data-category="domingos">Cultos Domingos</button>
+          <button class="tag" data-category="jovens">Jovens</button>
+          <button class="tag" data-category="zoe">Ministério Zoe</button>
+          <button class="tag" data-category="louvor">Ministério de Louvor</button>
+          <button class="tag" data-category="preciosas">Preciosas</button>
+          <button class="tag" data-category="homens">Homens de Honra</button>
+          <button class="tag" data-category="palavrinha">Palavrinha Viva</button>
+        </div>
+
+        <select id="year-filter">
+          <option value="todos">Todos os Anos</option>
+          <option value="2026">2026</option>
+          <option value="2025">2025</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- ÁLBUNS -->
+    <main class="albums-container">
+      <div class="album-grid" id="album-grid">
+        
+        <article class="album-card" data-category="domingos" data-year="2026" data-id="domingos-2026">
+          <div class="album-cover">
+            <div class="cover-header">
+              <span class="badge-category">Cultos Domingos</span>
+              <button class="btn-fav">★</button>
+            </div>
+            <div class="cover-icon">⛪</div>
+          </div>
+          <div class="album-info">
+            <h3>Culto de Celebração Noturno</h3>
+            <p class="album-meta">📅 Outubro 2026</p>
+          </div>
+        </article>
+
+        <article class="album-card" data-category="jovens" data-year="2026" data-id="jovens-2026">
+          <div class="album-cover">
+            <div class="cover-header">
+              <span class="badge-category">Jovens</span>
+              <button class="btn-fav">★</button>
+            </div>
+            <div class="cover-icon">🔥</div>
+          </div>
+          <div class="album-info">
+            <h3>Conecta Youth - Noite de Louvor</h3>
+            <p class="album-meta">📅 Setembro 2026</p>
+          </div>
+        </article>
+
+        <article class="album-card" data-category="louvor" data-year="2026" data-id="louvor-2026">
+          <div class="album-cover">
+            <div class="cover-header">
+              <span class="badge-category">Ministério de Louvor</span>
+              <button class="btn-fav">★</button>
+            </div>
+            <div class="cover-icon">🎸</div>
+          </div>
+          <div class="album-info">
+            <h3>Ensaio Geral & Ministração</h3>
+            <p class="album-meta">📅 Outubro 2026</p>
+          </div>
+        </article>
+
+        <article class="album-card" data-category="zoe" data-year="2026" data-id="zoe-2026">
+          <div class="album-cover">
+            <div class="cover-header">
+              <span class="badge-category">Ministério Zoe</span>
+              <button class="btn-fav">★</button>
+            </div>
+            <div class="cover-icon">🌱</div>
+          </div>
+          <div class="album-info">
+            <h3>Encontro Zoe - Edição Especial</h3>
+            <p class="album-meta">📅 Setembro 2026</p>
+          </div>
+        </article>
+
+        <article class="album-card" data-category="preciosas" data-year="2026" data-id="preciosas-2026">
+          <div class="album-cover">
+            <div class="cover-header">
+              <span class="badge-category">Preciosas</span>
+              <button class="btn-fav">★</button>
+            </div>
+            <div class="cover-icon">👑</div>
+          </div>
+          <div class="album-info">
+            <h3>Chá de Mulheres Preciosas</h3>
+            <p class="album-meta">📅 Setembro 2026</p>
+          </div>
+        </article>
+
+        <article class="album-card" data-category="homens" data-year="2026" data-id="homens-2026">
+          <div class="album-cover">
+            <div class="cover-header">
+              <span class="badge-category">Homens de Honra</span>
+              <button class="btn-fav">★</button>
+            </div>
+            <div class="cover-icon">🛡️</div>
+          </div>
+          <div class="album-info">
+            <h3>Café Homens de Honra</h3>
+            <p class="album-meta">📅 Agosto 2026</p>
+          </div>
+        </article>
+
+        <article class="album-card" data-category="palavrinha" data-year="2026" data-id="palavrinha-2026">
+          <div class="album-cover">
+            <div class="cover-header">
+              <span class="badge-category">Palavrinha Viva</span>
+              <button class="btn-fav">★</button>
+            </div>
+            <div class="cover-icon">📖</div>
+          </div>
+          <div class="album-info">
+            <h3>Culto Infantil - Palavrinha Viva</h3>
+            <p class="album-meta">📅 Outubro 2026</p>
+          </div>
+        </article>
+
+      </div>
+    </main>
+
+    <!-- GALERIA MODAL -->
+    <div class="modal-overlay" id="gallery-modal">
+      <div class="modal-content">
+        <header class="modal-header">
+          <div>
+            <h2 id="modal-title">Nome do Álbum</h2>
+            <p id="modal-subtitle">Envie fotos do seu computador ou celular para este álbum</p>
+          </div>
+          <button class="btn-close" id="btn-close-modal">&times;</button>
+        </header>
+
+        <div class="gallery-actions">
+          <label style="cursor:pointer; font-size:14px; display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="select-all-photos" /> Selecionar Todas
+          </label>
+
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <label for="real-file-input" class="btn-primary" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.85rem;">
+              ➕ Adicionar Fotos
+            </label>
+            <input type="file" id="real-file-input" accept="image/*" multiple style="display: none;" />
+
+            <button id="btn-download-selected" class="btn-secondary" disabled>
+              📥 Baixar (<span id="selected-count">0</span>)
+            </button>
+          </div>
+        </div>
+
+        <div class="photo-grid" id="photo-grid"></div>
+      </div>
+    </div>
+
+    <!-- EDITOR MODAL -->
+    <div class="modal-overlay" id="editor-modal">
+      <div class="modal-content" style="max-width:850px;">
+        <header class="modal-header">
+          <div>
+            <h2 id="editor-photo-title">Editor Leve Kadosh</h2>
+            <p>Ajustes de Brilho, Contraste, Saturação e Temperatura</p>
+          </div>
+          <button class="btn-close" id="btn-close-editor">&times;</button>
+        </header>
+
+        <div class="editor-layout">
+          <div class="editor-preview-container">
+            <div class="editor-preview-box" id="editor-preview-box">
+              <div id="editor-fallback-icon" style="font-size:2.5rem; margin-bottom:8px;">📸</div>
+              <strong id="editor-photo-name">Preview da Imagem</strong>
+            </div>
+          </div>
+
+          <div class="editor-controls">
+            <div class="control-group">
+              <label>☀️ Brilho <span id="val-brightness">100%</span></label>
+              <input type="range" id="input-brightness" min="50" max="150" value="100">
+            </div>
+
+            <div class="control-group">
+              <label>🌓 Contraste <span id="val-contrast">100%</span></label>
+              <input type="range" id="input-contrast" min="50" max="150" value="100">
+            </div>
+
+            <div class="control-group">
+              <label>🎨 Saturação <span id="val-saturate">100%</span></label>
+              <input type="range" id="input-saturate" min="0" max="200" value="100">
+            </div>
+
+            <div class="control-group">
+              <label>🌡️ Temp. Cor <span id="val-hue">0°</span></label>
+              <input type="range" id="input-hue" min="-30" max="30" value="0">
+            </div>
+
+            <div class="editor-toolbar">
+              <button id="btn-reset-filters" class="btn-secondary" style="flex:1;">↺ Redefinir</button>
+              <button id="btn-before-after" class="btn-secondary" style="flex:1;">👁️ Antes/Depois</button>
+            </div>
+
+            <button id="btn-export-photo" class="btn-primary" style="margin-top:10px; width:100%;">💾 Baixar Foto Tratada</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const loginScreen = document.getElementById('login-screen');
+  const appContainer = document.getElementById('app-container');
+  const loginEmail = document.getElementById('login-email');
+  const loginPassword = document.getElementById('login-password');
+  const btnLogin = document.getElementById('btn-login');
+  const btnLogout = document.getElementById('btn-logout');
+  const loginError = document.getElementById('login-error');
+
+  btnLogin.addEventListener('click', () => {
+    if (loginEmail.value.trim() !== "" && loginPassword.value.trim() !== "") {
+      loginScreen.style.display = 'none';
+      appContainer.classList.add('active');
+    } else {
+      loginError.style.display = 'block';
+    }
+  });
+
+  btnLogout.addEventListener('click', () => {
+    loginScreen.style.display = 'flex';
+    appContainer.classList.remove('active');
+  });
+
+  const searchInput = document.getElementById('album-search');
+  const tagButtons = document.querySelectorAll('#category-filters .tag');
+  const yearSelect = document.getElementById('year-filter');
+  const albumCards = document.querySelectorAll('.album-card');
+  
+  const galleryModal = document.getElementById('gallery-modal');
+  const closeGalleryBtn = document.getElementById('btn-close-modal');
+  const modalTitle = document.getElementById('modal-title');
+  const photoGrid = document.getElementById('photo-grid');
+  const selectAllCheckbox = document.getElementById('select-all-photos');
+  const downloadSelectedBtn = document.getElementById('btn-download-selected');
+  const selectedCountSpan = document.getElementById('selected-count');
+  const realFileInput = document.getElementById('real-file-input');
+
+  const editorModal = document.getElementById('editor-modal');
+  const closeEditorBtn = document.getElementById('btn-close-editor');
+  const editorPreviewBox = document.getElementById('editor-preview-box');
+  const editorPhotoName = document.getElementById('editor-photo-name');
+  const editorFallbackIcon = document.getElementById('editor-fallback-icon');
+
+  const inputBrightness = document.getElementById('input-brightness');
+  const inputContrast = document.getElementById('input-contrast');
+  const inputSaturate = document.getElementById('input-saturate');
+  const inputHue = document.getElementById('input-hue');
+
+  const valBrightness = document.getElementById('val-brightness');
+  const valContrast = document.getElementById('val-contrast');
+  const valSaturate = document.getElementById('val-saturate');
+  const valHue = document.getElementById('val-hue');
+
+  const btnResetFilters = document.getElementById('btn-reset-filters');
+  const btnBeforeAfter = document.getElementById('btn-before-after');
+  const btnExportPhoto = document.getElementById('btn-export-photo');
+
+  let activeCategory = 'todos';
+  let albumStore = {}; 
+  let currentAlbumId = '';
+
+  function filterAlbums() {
+    const query = searchInput.value.toLowerCase();
+    const selectedYear = yearSelect.value;
+
+    albumCards.forEach(card => {
+      const title = card.querySelector('h3').textContent.toLowerCase();
+      const category = card.getAttribute('data-category');
+      const year = card.getAttribute('data-year');
+
+      const matchesSearch = title.includes(query);
+      const matchesCategory = activeCategory === 'todos' || category === activeCategory;
+      const matchesYear = selectedYear === 'todos' || year === selectedYear;
+
+      if (matchesSearch && matchesCategory && matchesYear) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  searchInput.addEventListener('input', filterAlbums);
+  yearSelect.addEventListener('change', filterAlbums);
+
+  tagButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tagButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCategory = btn.getAttribute('data-category');
+      filterAlbums();
+    });
+  });
+
+  document.querySelectorAll('.btn-fav').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      btn.classList.toggle('active');
+    });
+  });
+
+  albumCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const albumName = card.querySelector('h3').textContent;
+      currentAlbumId = card.getAttribute('data-id');
+      modalTitle.textContent = albumName;
+
+      if (!albumStore[currentAlbumId]) {
+        albumStore[currentAlbumId] = [];
+      }
+
+      renderPhotos();
+      galleryModal.classList.add('active');
+    });
+  });
+
+  function renderPhotos() {
+    photoGrid.innerHTML = '';
+    selectAllCheckbox.checked = false;
+    updateDownloadCount();
+
+    const photos = albumStore[currentAlbumId] || [];
+
+    if (!photos.length) {
+      photoGrid.innerHTML = '<p style="color:#aeaeb2; padding:30px; grid-column: 1/-1; text-align:center;">Nenhuma foto neste álbum. Clique no botão <b>➕ Adicionar Fotos</b> acima!</p>';
+      return;
+    }
+
+    photos.forEach((photo, index) => {
+      const photoDiv = document.createElement('div');
+      photoDiv.className = 'photo-card-demo';
+
+      photoDiv.innerHTML = `
+        <input type="checkbox" class="photo-checkbox" data-index="${index}">
+        <div class="photo-preview-placeholder">
+          <img src="${photo.url}" alt="${photo.name}">
+        </div>
+        <div class="photo-card-body">
+          <span title="${photo.name}">${photo.name}</span>
+          <button class="btn-secondary btn-edit-photo" data-index="${index}" style="padding: 0.3rem 0.6rem; font-size:0.75rem;">✏️ Editar</button>
+        </div>
+      `;
+      photoGrid.appendChild(photoDiv);
+    });
+
+    photoGrid.querySelectorAll('.photo-checkbox').forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        const item = e.target.closest('.photo-card-demo');
+        if (e.target.checked) item.classList.add('selected');
+        else item.classList.remove('selected');
+        updateDownloadCount();
+      });
+    });
+
+    photoGrid.querySelectorAll('.btn-edit-photo').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = btn.getAttribute('data-index');
+        const photo = albumStore[currentAlbumId][idx];
+        openEditor(photo.name, photo.url);
+      });
+    });
+  }
+
+  realFileInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        albumStore[currentAlbumId].push({
+          name: file.name,
+          url: evt.target.result
+        });
+        renderPhotos();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    realFileInput.value = '';
+  });
+
+  closeGalleryBtn.addEventListener('click', () => {
+    galleryModal.classList.remove('active');
+  });
+
+  selectAllCheckbox.addEventListener('change', (e) => {
+    const isChecked = e.target.checked;
+    photoGrid.querySelectorAll('.photo-checkbox').forEach(cb => {
+      cb.checked = isChecked;
+      const item = cb.closest('.photo-card-demo');
+      if (isChecked) item.classList.add('selected');
+      else item.classList.remove('selected');
+    });
+    updateDownloadCount();
+  });
+
+  function updateDownloadCount() {
+    const selected = photoGrid.querySelectorAll('.photo-checkbox:checked').length;
+    selectedCountSpan.textContent = selected;
+    downloadSelectedBtn.disabled = selected === 0;
+  }
+
+  downloadSelectedBtn.addEventListener('click', () => {
+    alert(`Baixando ${selectedCountSpan.textContent} foto(s)!`);
+  });
+
+  function openEditor(fileName, photoUrl) {
+    editorPhotoName.textContent = fileName;
+    
+    if (photoUrl) {
+      editorPreviewBox.style.backgroundImage = `url(${photoUrl})`;
+      editorFallbackIcon.style.display = 'none';
+      editorPhotoName.style.display = 'none';
+    } else {
+      editorPreviewBox.style.backgroundImage = 'none';
+      editorFallbackIcon.style.display = 'block';
+      editorPhotoName.style.display = 'block';
+    }
+
+    resetEditorFilters();
+    editorModal.classList.add('active');
+  }
+
+  closeEditorBtn.addEventListener('click', () => {
+    editorModal.classList.remove('active');
+  });
+
+  function applyFilters() {
+    const b = inputBrightness.value;
+    const c = inputContrast.value;
+    const s = inputSaturate.value;
+    const h = inputHue.value;
+
+    valBrightness.textContent = `${b}%`;
+    valContrast.textContent = `${c}%`;
+    valSaturate.textContent = `${s}%`;
+    valHue.textContent = `${h}°`;
+
+    editorPreviewBox.style.filter = `brightness(${b}%) contrast(${c}%) saturate(${s}%) hue-rotate(${h}deg)`;
+  }
+
+  [inputBrightness, inputContrast, inputSaturate, inputHue].forEach(input => {
+    input.addEventListener('input', applyFilters);
+  });
+
+  function resetEditorFilters() {
+    inputBrightness.value = 100;
+    inputContrast.value = 100;
+    inputSaturate.value = 100;
+    inputHue.value = 0;
+    applyFilters();
+  }
+
+  btnResetFilters.addEventListener('click', resetEditorFilters);
+
+  btnBeforeAfter.addEventListener('mousedown', () => {
+    editorPreviewBox.style.filter = 'none';
+  });
+  btnBeforeAfter.addEventListener('mouseup', applyFilters);
+  btnBeforeAfter.addEventListener('mouseleave', applyFilters);
+
+  btnExportPhoto.addEventListener('click', () => {
+    alert('Foto tratada exportada com sucesso!');
+  });
+
+  document.getElementById('new-album').addEventListener('click', () => {
+    alert('Abre formulário para criar novos álbuns!');
+  });
+</script>
+
+</body>
+</html>
